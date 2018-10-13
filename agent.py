@@ -7,7 +7,7 @@ class Agent:
     def __init__(self):
         self._mdp = MDP()
         self.env = gym.envs.make("FrozenLake-v0")
-        self.episodes = 8000
+        self.episodes = 10000
         self.count = 0
 
     @property
@@ -28,10 +28,11 @@ class Agent:
                 # 1 observation (object), 2 reward (float), 3 done(bool), 4 info dict
                 step = self.env.step(action)
                 # percept aanmaken
-                percept = Percept(current_state, action, step[1], step[0], step[2], step[3]['prob'])
+                percept = Percept(current_state, action, step[1], step[0], step[2])
                 # huidige state aanpassen
                 current_state = percept.next_state
                 # nakijken of we dood zijn, zoja is de episode klaar
                 done = percept.final_state
                 self.mdp.update(percept)
-        print(self.mdp.matrix[0])
+
+        print(self.mdp.matrix[1])

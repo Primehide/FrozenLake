@@ -1,11 +1,10 @@
 class Percept:
-    def __init__(self, current_state: object, action: float, reward: float, next_state: int, final_state: bool, transition: float):
+    def __init__(self, current_state: object, action: float, reward: float, next_state: int, final_state: bool):
         self._current_state = current_state
         self._action = action
         self._reward = reward
         self._next_state = next_state
         self._final_state = final_state
-        self._transition = transition
 
     @property
     def current_state(self) -> object:
@@ -27,7 +26,4 @@ class Percept:
     def final_state(self) -> bool:
         return self._final_state
 
-    @property
-    def transition(self) -> float:
-        return self._transition
 
