@@ -1,5 +1,4 @@
 from agent import Agent
-import numpy
 
 
 
