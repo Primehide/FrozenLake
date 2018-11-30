@@ -5,15 +5,25 @@ np.set_printoptions(suppress=True)
 
 class MDP:
     def __init__(self):
-        #Dim 1 -> Actie
-        #Dim 2 -> Current State
+        #Dim 1 -> Current State
+        #Dim 2 -> Actie
         #Dim 3 -> Next State
         #Dim 4 -> Waardes
         self._tables = np.zeros((16, 4, 16, 4))
+        self._learningRate = 1
+        self._discountFactor = 0.9
 
     @property
     def matrix(self):
         return self._tables
+
+    @property
+    def learningRate(self):
+        return self._learningRate
+
+    @property
+    def discountFactor(self):
+        return self._discountFactor
 
     def update(self, percept : Percept):
         #Update R(reward), zit in percept, element 0
@@ -22,7 +32,7 @@ class MDP:
         #Update Ptsa (update transitiemodel, maw wat is da kans dat ik hier uitglij?)
         #self.matrix[percept.current_state,percept.action,percept.next_state]
         self.matrix[percept.current_state, percept.action, percept.next_state, 0] = percept.reward
-        self.matrix[percept.current_state,percept.action, ::, 1:2] =  self.matrix[percept.current_state,percept.action, ::, 1:2] + 1
+        self.matrix[percept.current_state,percept.action, ::, 1:2] = self.matrix[percept.current_state,percept.action, ::, 1:2] + 1
         self.matrix[percept.current_state, percept.action, percept.next_state, 2] = self.matrix[percept.current_state, percept.action, percept.next_state, 2] + 1
         self.matrix[percept.current_state, percept.action, percept.next_state, 3] = 0
 
