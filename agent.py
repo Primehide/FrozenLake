@@ -16,10 +16,11 @@ class Agent:
             # huidige status
             current_state = self.env.reset()
             self.count = self.count + 1
+            self._strategy.setCount(self.count)
             done = False
             while not done:
                 # random actie uitvoeren
-                action = self.env.action_space.sample()
+                action = self._strategy.next_action(current_state)
                 # step actie geeft 4 waardes terug
                 # 1 observation (object), 2 reward (float), 3 done(bool), 4 info dict
                 step = self.env.step(action)
@@ -30,5 +31,6 @@ class Agent:
                 # nakijken of we dood zijn, zoja is de episode klaar
                 done = percept.final_state
                 self._strategy.learn(percept)
+
 
         #print(self._strategy.mdp.matrix[14])
