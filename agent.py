@@ -33,4 +33,5 @@ class Agent:
                 self._strategy.learn(percept)
 
 
-        #print(self._strategy.mdp.matrix[14])
+        self._strategy.print_policy(4, 4)
+

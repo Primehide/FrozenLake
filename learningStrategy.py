@@ -47,7 +47,7 @@ class LearningStrategy:
 
 
     def learn(self, percept: Percept):
-        self.mdp.update(percept)
+        #self.mdp.update(percept)
         self.evaluate(percept)
         #self.improve()
 
@@ -55,20 +55,28 @@ class LearningStrategy:
         self._evaluation.qLearning(percept)
 
     def improve(self):
+        #loopen over elke state
         for s in range(0, 16):
+            #de hoogste qvalue van de huidige state ophalen
             bestAction = max(self._evaluation.qvalues[s])
-            increased = False
-            for a in range(0, 4):
-                qval = self._evaluation.qvalues[s, a]
-                if(qval == bestAction) and (increased == False):
-                    #4 nog aan te passen aan aantal mogelijke acties
-                    self.policy2[s, a] = 1 - self._epsilon + (self._epsilon / 4)
-                    increased = True
-                else:
-                    self.policy2[s, a] = self._epsilon / 4
-                increased == False
+            #loopen over elke mogelijke actie
+            if bestAction != 0:
+                for a in range(0, 4):
+                    #qvalue ophalen van huidige actie die we bekijken
+                    qval = self._evaluation.qvalues[s, a]
+                    #als de qval van de huidige itaratie van acties overeenkomt met de beste qvalue dan weten we dat dit de 'betere' actie is en moet dit aangast worden in de policy.
+                    if (qval == bestAction):
+                        # 4 nog aan te passen aan aantal mogelijke acties
+                        self.policy2[s, a] = 1 - self._epsilon + (self._epsilon / 4)
+                    #als dit niet de beste actie is voeren we dit uit.
+                    else:
+                        self.policy2[s, a] = self._epsilon / 4
+                    #self.print_policy(4, 4)
 
-            self._epsilon = self._epsilonMin + (self._epsilonMax - self._epsilonMin) * math.pow(math.e, -0.9 * self.count)
+            #epsilon verlagen, dit heeft met exploration/exploitation te maken
+            self._epsilon = self._epsilonMin + (self._epsilonMax - self._epsilonMin) * math.pow(math.e,
+                                                                                                -0.9 * self.count)
+
 
 
 
