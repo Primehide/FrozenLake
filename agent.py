@@ -7,7 +7,7 @@ class Agent:
     def __init__(self):
         self._strategy = LearningStrategy()
         self.env = gym.envs.make("FrozenLake-v0")
-        self.episodes = 10000
+        self.episodes = 5000
         self.count = 0
 
     def learn(self):
@@ -15,8 +15,8 @@ class Agent:
             # env resetten
             # huidige status
             current_state = self.env.reset()
-            self.count = self.count + 1
             self._strategy.setCount(self.count)
+            self.count = self.count + 1
             done = False
             while not done:
                 # random actie uitvoeren
@@ -33,5 +33,8 @@ class Agent:
                 self._strategy.learn(percept)
 
 
+
+        print(self._strategy.getqvalues())
         self._strategy.print_policy(4, 4)
+        #print(self._strategy.mdp.matrix)
 
