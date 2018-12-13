@@ -32,6 +32,10 @@ class LearningStrategy:
     def mdp(self) -> MDP:
         return self._mdp
 
+    @property
+    def getepsilon(self):
+        return self._epsilon
+
     def setCount(self, x):
         self.count = x
 
@@ -68,7 +72,8 @@ class LearningStrategy:
                     self.policy3[s, a] = self._epsilon / 4
                     #self.policy2[s, a] = self._epsilon / 4
 
-        self._epsilon = self._epsilonMin + (self._epsilonMax - self._epsilonMin) * math.pow(math.e, -0.5 * self.count)
+        self._epsilon = self._epsilonMin + (self._epsilonMax - self._epsilonMin) * math.pow(math.e, -0.001 * self.count)
+        #print(self._epsilon)
         #self.print_policy(4, 4)
 
 

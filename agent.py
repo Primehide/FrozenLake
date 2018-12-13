@@ -7,7 +7,7 @@ class Agent:
     def __init__(self):
         self._strategy = LearningStrategy()
         self.env = gym.envs.make("FrozenLake-v0")
-        self.episodes = 5000
+        self.episodes = 2000
         self.count = 0
 
     def learn(self):
@@ -35,6 +35,7 @@ class Agent:
 
 
         print(self._strategy.getqvalues())
+        print(self._strategy.getepsilon)
         self._strategy.print_policy(4, 4)
         #print(self._strategy.mdp.matrix)
 

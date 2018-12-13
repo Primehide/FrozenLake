@@ -25,7 +25,7 @@ class Evaluation:
         #de reward die we hebben gekregen door hier terecht te komen
         reward = percept.reward
         #de hoogste qwaarde van de state waar we zijn terecht gekomen
-        maxq = max(self.qvalues[percept.next_state])
+        maxq = np.max(self.qvalues[percept.next_state, :])
 
         #qwaardes voor deze state updaten
         self.qvalues[percept.current_state, percept.action] = currentQ + self._mdp.learningRate * (reward + self._mdp.discountFactor * (maxq - currentQ))
