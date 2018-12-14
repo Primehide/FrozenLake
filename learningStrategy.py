@@ -17,6 +17,7 @@ class LearningStrategy:
         self._epsilon = 1.0
         self._epsilonMin = 0.01
         self._epsilonMax = 1.0
+        self._epsilonDecay = -0.005
         self.policy3 = np.ones((16, 4)) / 4
         self.policy2 = np.ones((16, 4)) / 4
         self.count = 0
@@ -27,6 +28,7 @@ class LearningStrategy:
         # initial policy
         print("initial policy:")
         self.print_policy(4,4)
+        self.steps = 0
 
     @property
     def mdp(self) -> MDP:
@@ -74,7 +76,8 @@ class LearningStrategy:
                     self.policy3[s, a] = self._epsilon / 4
                     #self.policy2[s, a] = self._epsilon / 4
 
-        self._epsilon = self._epsilonMin + (self._epsilonMax - self._epsilonMin) * math.pow(math.e, -0.006 * self.count)
+            self._epsilon = self._epsilonMin + (self._epsilonMax - self._epsilonMin) * math.pow(math.e, self._epsilonDecay * self.count)
+        self.steps += 1
         #print(self._epsilon)
         #self.print_policy(4, 4)
 
@@ -85,7 +88,7 @@ class LearningStrategy:
 
     def argMax(self, state : int):
         values = self._evaluation.getqvalues
-        maxArray = np.where(self._evaluation.getqvalues[state] == max(values[state]))
+        maxArray = np.where(values[state] == max(values[state]))
         return np.random.choice(maxArray[0])
 
 

@@ -9,6 +9,7 @@ class Agent:
         self.env = gym.envs.make("FrozenLake-v0")
         self.episodes = 2000
         self.count = 0
+        self.totalRewards = 0
 
     def learn(self):
         while self.count < self.episodes:
@@ -26,6 +27,7 @@ class Agent:
                 step = self.env.step(action)
                 # percept aanmaken
                 percept = Percept(current_state, action, step[1], step[0], step[2])
+                self.totalRewards += percept.reward
                 # huidige state aanpassen
                 current_state = percept.next_state
                 # nakijken of we dood zijn, zoja is de episode klaar
@@ -34,7 +36,7 @@ class Agent:
                 self._strategy.learn(percept, done)
 
 
-
+        print("Average reward: " + (self.totalRewards / self.count).__str__())
         print(self._strategy.getqvalues())
         print(self._strategy.getepsilon)
         self._strategy.print_policy(4, 4)

@@ -10,7 +10,7 @@ class Evaluation:
         self.qvalues3 = np.zeros((16, 4))
         self.vvalues = np.zeros(16)
         self.perceptsBuffer = []
-        self.N = 10
+        self.N = 50
 
 
     @property
@@ -23,10 +23,6 @@ class Evaluation:
         self._mdp.update(percept)
         #qvalues ophalen die er nu staan
         currentQ = self.qvalues[percept.current_state, percept.action]
-        #qvalues van volgende state
-        nextQ = self.qvalues[percept.next_state, percept.action]
-
-        #print(nextQ)
         #de reward die we hebben gekregen door hier terecht te komen
         reward = percept.reward
         #de hoogste qwaarde van de state waar we zijn terecht gekomen
@@ -70,8 +66,6 @@ class Evaluation:
                 maxq = np.max(self.qvalues3[p.next_state, :])
                 self.qvalues3[p.current_state, p.action] = currentQ + self._mdp.learningRate * (
                         reward + self._mdp.discountFactor * maxq - currentQ)
-
-            #print(self.qvalues3)
             self.perceptsBuffer.clear()
 
 
