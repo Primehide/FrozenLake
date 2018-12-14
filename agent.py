@@ -30,7 +30,8 @@ class Agent:
                 current_state = percept.next_state
                 # nakijken of we dood zijn, zoja is de episode klaar
                 done = percept.final_state
-                self._strategy.learn(percept)
+                #print(done)
+                self._strategy.learn(percept, done)
 
 
 

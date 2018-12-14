@@ -48,9 +48,9 @@ class LearningStrategy:
         return action
 
 
-    def learn(self, percept: Percept):
+    def learn(self, percept: Percept, done: bool):
         #self.mdp.update(percept)
-        self.evaluate(percept)
+        self.evaluate(percept, done)
         #values = self._evaluation.getqvalues
         self.improve()
 
@@ -58,8 +58,10 @@ class LearningStrategy:
         return self._evaluation.getqvalues
 
 
-    def evaluate(self,percept: Percept):
-        self.test = self._evaluation.qLearning(percept)
+    def evaluate(self,percept: Percept, done: bool):
+        #self._evaluation.qLearning(percept)
+        #self._evaluation.nstepqlearning(percept)
+        self._evaluation.montecarlo(percept, done)
 
     def improve(self):
         for s in range(0, 16):
@@ -72,7 +74,7 @@ class LearningStrategy:
                     self.policy3[s, a] = self._epsilon / 4
                     #self.policy2[s, a] = self._epsilon / 4
 
-        self._epsilon = self._epsilonMin + (self._epsilonMax - self._epsilonMin) * math.pow(math.e, -0.001 * self.count)
+        self._epsilon = self._epsilonMin + (self._epsilonMax - self._epsilonMin) * math.pow(math.e, -0.006 * self.count)
         #print(self._epsilon)
         #self.print_policy(4, 4)
 
