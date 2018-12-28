@@ -13,12 +13,12 @@ class LearningStrategy:
 
     def __init__(self):
         self._mdp = MDP()
-        self._evaluation = Evaluation(mdp=self._mdp)
+        self.policy3 = np.ones((16, 4)) / 4
+        self._evaluation = Evaluation(mdp=self._mdp, policy=self.policy3)
         self._epsilon = 1.0
         self._epsilonMin = 0.01
         self._epsilonMax = 1.0
         self._epsilonDecay = -0.005
-        self.policy3 = np.ones((16, 4)) / 4
         self.policy2 = np.ones((16, 4)) / 4
         self.count = 0
         print("Rewards:")
@@ -63,10 +63,12 @@ class LearningStrategy:
     def evaluate(self,percept: Percept, done: bool):
         #self._evaluation.qLearning(percept)
         #self._evaluation.nstepqlearning(percept)
-        self._evaluation.montecarlo(percept, done)
+        #self._evaluation.montecarlo(percept, done)
+        self._evaluation.vevaluete(percept)
 
     def improve(self):
         for s in range(0, 16):
+            #bestAction = self.argMax2(s)
             bestAction = self.argMax(s)
             for a in range(0, 4):
                 if (a == bestAction):
@@ -78,8 +80,6 @@ class LearningStrategy:
 
             self._epsilon = self._epsilonMin + (self._epsilonMax - self._epsilonMin) * math.pow(math.e, self._epsilonDecay * self.count)
         self.steps += 1
-        #print(self._epsilon)
-        #self.print_policy(4, 4)
 
 
 
@@ -90,6 +90,16 @@ class LearningStrategy:
         values = self._evaluation.getqvalues
         maxArray = np.where(values[state] == max(values[state]))
         return np.random.choice(maxArray[0])
+
+    def argMax2(self, s: int):
+        values = [self.policy3[s, a] * sum(
+            [self._mdp.matrix[s, a, s_, 3] * (self._mdp.matrix[s, a, s_, 0] + self._mdp.discountFactor * self._evaluation.getvvalues[s_]) for s_ in
+             range(16)]) for a in range(4)]
+        maxArray = np.where(values == max(values))
+        return np.random.choice(maxArray[0])
+
+
+
 
 
 

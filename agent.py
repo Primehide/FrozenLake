@@ -34,11 +34,13 @@ class Agent:
                 done = percept.final_state
                 #print(done)
                 self._strategy.learn(percept, done)
+                if (percept.reward == 1):
+                    print("found reward on episode: " + self.count.__str__())
 
 
         print("Average reward: " + (self.totalRewards / self.count).__str__())
-        print(self._strategy.getqvalues())
-        print(self._strategy.getepsilon)
+        #print(self._strategy.getqvalues())
+        #print(self._strategy.getepsilon)
         self._strategy.print_policy(4, 4)
         #print(self._strategy.mdp.matrix)
 
