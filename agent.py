@@ -1,11 +1,13 @@
 from percept import Percept
-from learningStrategy import LearningStrategy
+from learningStrategies.learningStrategy import LearningStrategy
 import gym
+from mdp import MDP
 
 
 class Agent:
-    def __init__(self):
-        self._strategy = LearningStrategy()
+    def __init__(self, learningStrategy: LearningStrategy):
+        self.mdp = MDP
+        self._strategy = learningStrategy #Bij aanmaken strategy meegeven
         self.env = gym.envs.make("FrozenLake-v0")
         self.episodes = 2000
         self.count = 0
@@ -16,7 +18,7 @@ class Agent:
             # env resetten
             # huidige status
             current_state = self.env.reset()
-            self._strategy.setCount(self.count)
+            self._strategy.setCount(self.count) #niet hier doen
             self.count = self.count + 1
             done = False
             while not done:
@@ -33,14 +35,10 @@ class Agent:
                 # nakijken of we dood zijn, zoja is de episode klaar
                 done = percept.final_state
                 #print(done)
-                self._strategy.learn(percept, done)
-                if (percept.reward == 1):
-                    print("found reward on episode: " + self.count.__str__())
+                self._strategy.learn(percept)
 
 
         print("Average reward: " + (self.totalRewards / self.count).__str__())
-        #print(self._strategy.getqvalues())
-        #print(self._strategy.getepsilon)
-        self._strategy.print_policy(4, 4)
-        #print(self._strategy.mdp.matrix)
+        self._strategy.print_policy()
+
 
