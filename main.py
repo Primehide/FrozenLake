@@ -3,6 +3,8 @@ from learningStrategies.QLearning import QLearning
 from learningStrategies.NStepQLearning import NStepQlearning
 from learningStrategies.MonteCarlo import MonteCarlo
 from learningStrategies.ValueIteration import ValueIteration
+from tests import unittesting
+import unittest
 
 def method_picker(argument):
     switcher = {
@@ -16,15 +18,10 @@ def method_picker(argument):
 
 
 if __name__ == '__main__':
-    print("Welke evaluation wil je gebruiken")
-    print("1) Value iteration")
-    print("2) qlearning")
-    print("3) nstep-qlearing")
-    print("4) monte carlo")
-    input = input("Wat is uw keuze")
-    print("Uw keuze is : ")
-    print(input)
-    learningStrategy = method_picker(input)
-    agent = Agent(learningStrategy)
-    agent.learn()
+    suite = unittest.TestSuite()
+    suite.addTest(unittesting.AITests("test_input"))
+    suite.addTest(unittesting.AITests("test_states"))
+    suite.addTest(unittesting.AITests("test_probability"))
+    runner = unittest.TextTestRunner()
+    runner.run(suite)
 

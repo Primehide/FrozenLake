@@ -25,7 +25,7 @@ class QLearning(LearningStrategy):
         self._qvalues[percept.current_state, percept.action] = currentQ + self._learningRate * (
                     reward + self._mdp.discountFactor * maxq - currentQ)
 
-        for v in range(0, 16):
+        for v in range(0, self.getStates()):
             self._vvalues[v] = max(self._qvalues[v])
         # print(self.qvalues)
 

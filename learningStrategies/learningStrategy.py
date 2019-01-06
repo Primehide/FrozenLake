@@ -9,10 +9,11 @@ ALL_POSSIBLE_ACTIONS = (0, 1, 2, 3)
 class LearningStrategy(ABC):
 
     def __init__(self):
-        self._mdp = MDP()
-        self._qvalues = np.zeros((16, 4))
-        self._vvalues = np.zeros(16)
-        self._policy = np.ones((16,4))/4
+        self._states = 1 #standaardwaarde, wordt later aangepast eens de omgeving bekend is
+        self._mdp = MDP(1)
+        self._qvalues = np.zeros((self._states, 4))
+        self._vvalues = np.zeros(self._states)
+        self._policy = np.ones((self._states, 4))/4
         self._learningRate = 0.8
         self._epsilonDecay = -0.005
         self._epsilon = 1.0
@@ -21,18 +22,33 @@ class LearningStrategy(ABC):
         self._count = 0
 
 
+    def setStates(self, amount):
+        self._states = amount
+        #=====Aanpassen aan nieuwe aantal states======
+        self._qvalues = np.zeros((self._states, 4))
+        self._vvalues = np.zeros(self._states)
+        self._policy = np.ones((self._states, 4)) / 4
+        self._mdp.setStates(amount)
+
+    def getStates(self):
+        return self._states
+
+    def getpolicy(self):
+        return self._policy
+
+
     def learn(self, percept: Percept):
         self.evaluate(percept)
         self.improve()
 
 
     @abstractmethod
-    def evaluate(self,percept: Percept):
+    def evaluate(self, percept: Percept):
         pass
 
 
     def improve(self):
-        for s in range(0, 16):
+        for s in range(0, self._states):
             bestAction = self.argMax(s)
             for a in range(0, 4):
                 if (a == bestAction):

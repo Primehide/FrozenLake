@@ -20,7 +20,7 @@ class ValueIteration(LearningStrategy):
         while delta > self._precision * r_max * ((1 - self._mdp.discountFactor) / self._mdp.discountFactor):
             delta = 0
             # over elke state lopen, moet nog dynamische worden, niet vast 16
-            for s in range(16):
+            for s in range(self.getStates()):
                 # oude v value opslagen
                 u = self._vvalues[s]
                 # value functie geeft 4 waardes terug
@@ -35,7 +35,7 @@ class ValueIteration(LearningStrategy):
     def value_function(self, s):
         return [self._policy[s, a] * sum(
             [self._mdp.matrix[s, a, s, 3] * (self._mdp.matrix[s, a, s, 0] + self._mdp.discountFactor * self._vvalues[s])
-             for s_ in range(16)])
+             for s_ in range(self.getStates())])
                 for a in range(4)]
 
 

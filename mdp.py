@@ -4,14 +4,19 @@ np.set_printoptions(threshold=np.inf)
 np.set_printoptions(suppress=True)
 
 class MDP:
-    def __init__(self):
+    def __init__(self, states):
         #Dim 1 -> Current State
         #Dim 2 -> Actie
         #Dim 3 -> Next State
         #Dim 4 -> Waardes
         #Dim 4 -> Reward, Nsa, Ntsa, Ptsa
-        self._tables = np.zeros((16, 4, 16, 4))
+        self._states = states
+        self._tables = np.zeros((states, 4, states, 4))
         self._discountFactor = 0.95
+
+    def setStates(self, amount):
+        self._states = amount
+        self._tables = np.zeros((self._states, 4, self._states, 4))
 
     @property
     def matrix(self):
