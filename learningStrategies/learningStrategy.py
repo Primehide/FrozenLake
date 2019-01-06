@@ -40,6 +40,9 @@ class LearningStrategy(ABC):
     def getStates(self):
         return self._states
 
+    def getmdp(self):
+        return self._mdp
+
     def getpolicy(self):
         return self._policy
 

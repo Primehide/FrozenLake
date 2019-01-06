@@ -6,7 +6,7 @@ class ValueIteration(LearningStrategy):
 
     def __init__(self):
         super().__init__()
-        self._precision = 0.0001
+        self._precision = 0.99
 
 
 
@@ -23,18 +23,15 @@ class ValueIteration(LearningStrategy):
             for s in range(self.getStates()):
                 # oude v value opslagen
                 u = self._vvalues[s]
-                # value functie geeft 4 waardes terug
-                # 1 voor elke actie in die state
-                # print(self.qvalues[s])
                 # de grootste waarde word onze vwaarde
-                self._vvalues[s] = np.max(self.value_function(s))
+                self._qvalues[s] = self.value_function(s)
+                self._vvalues[s] = np.max(self._qvalues[s])
                 delta = max(delta, abs(u - self._vvalues[s]))
-                # print(delta)
-                # print(self.vvalues)
 
     def value_function(self, s):
+
         return [self._policy[s, a] * sum(
-            [self._mdp.matrix[s, a, s, 3] * (self._mdp.matrix[s, a, s, 0] + self._mdp.discountFactor * self._vvalues[s])
+            [self._mdp.matrix[s, a, s_, 3] * (self._mdp.matrix[s, a, s_, 0] + self._mdp.discountFactor * self._vvalues[s_])
              for s_ in range(self.getStates())])
                 for a in range(4)]
 
