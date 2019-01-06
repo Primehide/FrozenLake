@@ -1,8 +1,6 @@
 from learningStrategies.learningStrategy import LearningStrategy
 from percept import Percept
 import numpy as np
-import colorama
-from colorama import Fore
 
 
 class QLearning(LearningStrategy):

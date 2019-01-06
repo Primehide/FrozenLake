@@ -6,7 +6,7 @@ class ValueIteration(LearningStrategy):
 
     def __init__(self):
         super().__init__()
-        self._precision = 0.99
+        self._precision = 0.001
 
 
 

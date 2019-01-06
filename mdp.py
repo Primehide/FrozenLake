@@ -12,7 +12,7 @@ class MDP:
         #Dim 4 -> Reward, Nsa, Ntsa, Ptsa
         self._states = states
         self._tables = np.zeros((states, 4, states, 4))
-        self._discountFactor = 0.95
+        self._discountFactor = 0.80
 
     def setStates(self, amount):
         self._states = amount
