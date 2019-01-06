@@ -1,6 +1,8 @@
 from learningStrategies.learningStrategy import LearningStrategy
 from percept import Percept
 import numpy as np
+import colorama
+from colorama import Fore
 
 
 class QLearning(LearningStrategy):
@@ -27,6 +29,6 @@ class QLearning(LearningStrategy):
 
         for v in range(0, self.getStates()):
             self._vvalues[v] = max(self._qvalues[v])
-        # print(self.qvalues)
+
 
 

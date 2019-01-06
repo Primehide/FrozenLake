@@ -3,8 +3,7 @@ from learningStrategies.QLearning import QLearning
 from learningStrategies.NStepQLearning import NStepQlearning
 from learningStrategies.MonteCarlo import MonteCarlo
 from learningStrategies.ValueIteration import ValueIteration
-from tests import unittesting
-import unittest
+import time
 
 def method_picker(argument):
     switcher = {
@@ -18,10 +17,34 @@ def method_picker(argument):
 
 
 if __name__ == '__main__':
-    suite = unittest.TestSuite()
-    suite.addTest(unittesting.AITests("test_input"))
-    suite.addTest(unittesting.AITests("test_states"))
-    suite.addTest(unittesting.AITests("test_probability"))
-    runner = unittest.TextTestRunner()
-    runner.run(suite)
+    print("")
+    print("Welke evaluation wil je gebruiken")
+    print("1) Value iteration")
+    print("2) qlearning")
+    print("3) nstep-qlearing")
+    print("4) monte carlo")
+    choice = input("Wat is uw keuze: ")
+
+    learningStrategy = method_picker(choice)
+    agent = Agent(learningStrategy)
+
+    print("")
+    print("The game map and its rewards:")
+    agent.print_rewards()
+    print("")
+    print("intial policy: all randon, 25% chance")
+    agent.getstrategy().print_policy()
+    print("")
+    print("the algorithm starts printing once it's found a reward.")
+    print("game will start in 5 seconds...")
+    print("")
+    time.sleep(5)
+
+
+    "Start learning"
+    agent.learn()
+
+    print("")
+    print("Done playing, end policy: ")
+    agent.getstrategy().print_policy()
 

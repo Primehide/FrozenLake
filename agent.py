@@ -54,7 +54,21 @@ class Agent:
                 self._strategy.learn(percept)
 
 
+        print("")
         print("Average reward: " + (self.totalRewards / self.count).__str__())
-        self._strategy.print_policy()
+
+    def print_rewards(self):
+        count = 0
+        print("------------")
+        for h in range(0, 4):
+            for w in range(0, 4):
+                print("|", end="")
+                if(count != 15):
+                    print(0.0, end="")
+                else:
+                    print(1.0, end="")
+                print("|", end="")
+                count = count + 1
+            print("")
 
 

@@ -3,6 +3,13 @@ from percept import Percept
 import numpy as np
 import math
 from abc import ABC, abstractmethod
+from tests.policytests import ProbabilityTest
+from tests.policytests import ParametrizedTestCase
+from tests.policytests import EpsilonTest
+import unittest
+import os
+import subprocess
+import sys
 
 ALL_POSSIBLE_ACTIONS = (0, 1, 2, 3)
 
@@ -36,15 +43,31 @@ class LearningStrategy(ABC):
     def getpolicy(self):
         return self._policy
 
+    def getepsilon(self):
+        return self._epsilon
+
 
     def learn(self, percept: Percept):
         self.evaluate(percept)
+        r_max = np.max(self._mdp.matrix[::, ::, ::, 0])
+        if (r_max != 0 and self._count % 100 == 0 and percept.final_state):
+            self.printqvalues()
         self.improve()
+        #suite = unittest.TestSuite()
+        #suite.addTest(ParametrizedTestCase.parametrize(ProbabilityTest, param=self._policy))
+        #runner = unittest.TextTestRunner(verbosity=2)
+        #runner.run(suite)
+
 
 
     @abstractmethod
     def evaluate(self, percept: Percept):
         pass
+
+    def printqvalues(self):
+        print("======QVALUES AFTER PLAYING: " + self._count.__str__() + " EPISODES =========")
+        print(self._qvalues)
+        print("=============================================================")
 
 
     def improve(self):
@@ -57,6 +80,11 @@ class LearningStrategy(ABC):
                     self._policy[s, a] = self._epsilon / 4
 
             self._epsilon = self._epsilonMin + (self._epsilonMax - self._epsilonMin) * math.pow(math.e, self._epsilonDecay * self._count)
+
+            #suite = unittest.TestSuite()
+            #suite.addTest(ParametrizedTestCase.parametrize(EpsilonTest, param=self._epsilon))
+            #runner = unittest.TextTestRunner(verbosity=40)
+            #runner.run(suite)
 
 
     def next_action(self, state: int):
@@ -83,19 +111,6 @@ class LearningStrategy(ABC):
                 count = count + 1
             print("")
 
-    def print_rewards(self, height: int, width):
-        count = 0
-        print("------------")
-        for h in range(0, height):
-            for w in range(0, width):
-                print("|", end="")
-                if(count != 15):
-                    print(0.0, end="")
-                else:
-                    print(1.0, end="")
-                print("|", end="")
-                count = count + 1
-            print("")
 
     def setCount(self, x):
         self._count = x
